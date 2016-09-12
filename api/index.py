@@ -1,6 +1,7 @@
 from . import api
 from .helpers import Links, Resource
 from .jwt import is_verified
+from flask import make_response, render_template
 
 index_links = Links(condition=lambda x: is_verified())
 
@@ -13,4 +14,4 @@ class Index(Resource):
 
     @index_links
     def get(self):
-        return {}
+        return make_response(render_template("index.html"), 200, {'Content-Type': 'text/html'})
