@@ -9,7 +9,8 @@ export default class Documents extends Component {
     constructor() {
         super();
         this.state = {
-            totalDocuments: 0
+            totalDocuments: 0,
+            textAvailable: false
         }
         $.ajax({
             url: '/documents',
@@ -19,28 +20,28 @@ export default class Documents extends Component {
         })
         .done((data) => {
             data.forEach((file) => {
-                store.data.fileNames.push(file.name);
+                store.data.files.push({id: file.id, name: file.name});
             });
             this.loadList();
-            /*
-            if(data.token) {
-                this.props.goTo('browse');
-            }*/
         })
         .fail((err) => {
             console.log(err);
         });
         this.loadList = this.loadList.bind(this);
+        this.showText = this.showText.bind(this);
     }
 
     loadList() {
-        this.setState({totalDocuments: store.data.fileNames.length});
+        this.setState({totalDocuments: store.data.files.length});
+    }
+    showText() {
+        this.setState({textAvailable: true});
     }
     render() {
         return (
             <div id="documents">
-                <DocumentList/>
-                <DocumentView/>
+                <DocumentList renderText={this.showText}/>
+                <DocumentView />
             </div>
         );
     }

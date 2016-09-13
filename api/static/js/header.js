@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {store} from './store';
 
 export default class Header extends Component {
     constructor() {
@@ -8,6 +9,7 @@ export default class Header extends Component {
     logoutHandler() {
         console.log('Logout');
         this.props.goTo('login');
+        store.data.reset();
     }
     render() {
         return(

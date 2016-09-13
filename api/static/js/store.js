@@ -1,7 +1,10 @@
 class Model {
     constructor() {
+        this.reset();
+    }
+    reset() {
         this.authtoken = null;
-        this.fileNames = [];
+        this.files = [];
     }
 }
 

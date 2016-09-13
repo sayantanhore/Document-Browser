@@ -133,6 +133,10 @@ var _react2 = _interopRequireDefault(_react);
 
 var _store = require('./store');
 
+var _jquery = require('jquery');
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -147,23 +151,50 @@ var DocumentList = function (_Component) {
     function DocumentList() {
         _classCallCheck(this, DocumentList);
 
-        return _possibleConstructorReturn(this, (DocumentList.__proto__ || Object.getPrototypeOf(DocumentList)).call(this));
+        var _this = _possibleConstructorReturn(this, (DocumentList.__proto__ || Object.getPrototypeOf(DocumentList)).call(this));
+
+        _this.state = {
+            textAvailable: false
+        };
+        _this.handleClick = _this.handleClick.bind(_this);
+        return _this;
     }
 
     _createClass(DocumentList, [{
+        key: 'handleClick',
+        value: function handleClick(id) {
+            var _this2 = this;
+
+            var url = '/document/' + id + '/text';
+            _jquery2.default.ajax({
+                url: url,
+                headers: {
+                    Authorization: 'username=ssh ' + _store.store.data.authtoken
+                }
+            }).done(function (data) {
+                _store.store.data.fileText = data;
+                console.log(_this2.props);
+                _this2.props.renderText();
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var _this3 = this;
+
             return _react2.default.createElement(
                 'div',
                 { id: 'document-list' },
                 _react2.default.createElement(
                     'ul',
                     null,
-                    _store.store.data.fileNames.map(function (fileName, index) {
+                    _store.store.data.files.map(function (file, index) {
                         return _react2.default.createElement(
                             'li',
-                            { key: index },
-                            fileName
+                            { key: index, onClick: function onClick() {
+                                    return _this3.handleClick(file.id);
+                                } },
+                            file.name
                         );
                     })
                 )
@@ -176,8 +207,8 @@ var DocumentList = function (_Component) {
 
 exports.default = DocumentList;
 
-},{"./store":9,"react":181}],4:[function(require,module,exports){
-"use strict";
+},{"./store":9,"jquery":35,"react":181}],4:[function(require,module,exports){
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -185,9 +216,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = require("react");
+var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _store = require('./store');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -207,9 +240,17 @@ var DocumentView = function (_Component) {
     }
 
     _createClass(DocumentView, [{
-        key: "render",
+        key: 'render',
         value: function render() {
-            return _react2.default.createElement("div", { id: "document-view" });
+            return _react2.default.createElement(
+                'div',
+                { id: 'document-view' },
+                _react2.default.createElement(
+                    'p',
+                    null,
+                    _store.store.data.fileText
+                )
+            );
         }
     }]);
 
@@ -218,7 +259,7 @@ var DocumentView = function (_Component) {
 
 exports.default = DocumentView;
 
-},{"react":181}],5:[function(require,module,exports){
+},{"./store":9,"react":181}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -262,7 +303,8 @@ var Documents = function (_Component) {
         var _this = _possibleConstructorReturn(this, (Documents.__proto__ || Object.getPrototypeOf(Documents)).call(this));
 
         _this.state = {
-            totalDocuments: 0
+            totalDocuments: 0,
+            textAvailable: false
         };
         _jquery2.default.ajax({
             url: '/documents',
@@ -271,24 +313,26 @@ var Documents = function (_Component) {
             }
         }).done(function (data) {
             data.forEach(function (file) {
-                _store.store.data.fileNames.push(file.name);
+                _store.store.data.files.push({ id: file.id, name: file.name });
             });
             _this.loadList();
-            /*
-            if(data.token) {
-                this.props.goTo('browse');
-            }*/
         }).fail(function (err) {
             console.log(err);
         });
         _this.loadList = _this.loadList.bind(_this);
+        _this.showText = _this.showText.bind(_this);
         return _this;
     }
 
     _createClass(Documents, [{
         key: 'loadList',
         value: function loadList() {
-            this.setState({ totalDocuments: _store.store.data.fileNames.length });
+            this.setState({ totalDocuments: _store.store.data.files.length });
+        }
+    }, {
+        key: 'showText',
+        value: function showText() {
+            this.setState({ textAvailable: true });
         }
     }, {
         key: 'render',
@@ -296,7 +340,7 @@ var Documents = function (_Component) {
             return _react2.default.createElement(
                 'div',
                 { id: 'documents' },
-                _react2.default.createElement(_documentList2.default, null),
+                _react2.default.createElement(_documentList2.default, { renderText: this.showText }),
                 _react2.default.createElement(_documentView2.default, null)
             );
         }
@@ -319,6 +363,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _store = require('./store');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -345,6 +391,7 @@ var Header = function (_Component) {
         value: function logoutHandler() {
             console.log('Logout');
             this.props.goTo('login');
+            _store.store.data.reset();
         }
     }, {
         key: 'render',
@@ -366,7 +413,7 @@ var Header = function (_Component) {
 
 exports.default = Header;
 
-},{"react":181}],7:[function(require,module,exports){
+},{"./store":9,"react":181}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -508,14 +555,27 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Model = function Model() {
-    _classCallCheck(this, Model);
+var Model = function () {
+    function Model() {
+        _classCallCheck(this, Model);
 
-    this.authtoken = null;
-    this.fileNames = [];
-};
+        this.reset();
+    }
+
+    _createClass(Model, [{
+        key: "reset",
+        value: function reset() {
+            this.authtoken = null;
+            this.files = [];
+        }
+    }]);
+
+    return Model;
+}();
 
 var data = new Model();
 

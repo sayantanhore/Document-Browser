@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import{store} from './store';
 
 export default class DocumentView extends Component {
     constructor() {
@@ -7,7 +8,7 @@ export default class DocumentView extends Component {
     render() {
         return (
             <div id="document-view">
-                
+                <p>{store.data.fileText}</p>
             </div>
         )
     }
