@@ -1,0 +1,21 @@
+#container {
+    height: 100%;
+}
+
+#login {
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    div {
+        display: flex;
+        flex-flow: row nowrap;
+        width: 50%;
+        justify-content: center;
+        label, input {
+            margin: 0.5rem 0.5rem;
+        }
+    }
+}

@@ -2,4 +2,6 @@
 python3-ssh-comm/
 data/
 dataminer/
+node_modules/
 **/*.pyc
+**/*.css
