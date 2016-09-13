@@ -6,7 +6,7 @@ export default class App extends Component {
     constructor() {
         super();
         this.state = {
-            page: 'browse'
+            page: 'login'
         }
         this.changePage = this.changePage.bind(this);
     }

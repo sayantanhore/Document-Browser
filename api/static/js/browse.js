@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Header from './header';
+import Documents from './documents';
 
 export default class Browse extends Component {
     constructor() {
@@ -9,6 +10,7 @@ export default class Browse extends Component {
         return (
             <div id="browse">
                 <Header goTo={this.props.goTo}/>
+                <Documents/>
             </div>
         );
     }

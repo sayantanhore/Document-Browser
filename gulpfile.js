@@ -31,18 +31,6 @@ gulp.task('bundle', () =>
       errLog('Browserify', err);
     })
     .pipe(source('index.js'))
-    /*
-    .pipe(buffer())
-    .pipe(uglify()) // Does not support ES6
-    .on('error', err => {
-      gutil.log(gutil.colors.red('Error :: Uglify : '), err.message)
-    })
-    .pipe(sourcemaps.init({loadMaps: true}))
-    .pipe(sourcemaps.write('./maps'))
-    .on('error', err => {
-      errLog('Sourcemaps', err)
-    })
-    */
     .pipe(gulp.dest('./api/static/js/'))
 );
 

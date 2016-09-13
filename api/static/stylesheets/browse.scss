@@ -1,4 +1,7 @@
-$header-color: rgba(8, 75, 138, 0.8);
+$header-color: rgba(59, 89, 152, 1.0);
+$list-color: rgba(216, 223, 234, 0.6);
+$list-color-hover: rgba(175, 189, 212, 0.6);
+
 #browse {
     display: flex;
     flex-flow: column nowrap;
@@ -6,6 +9,7 @@ $header-color: rgba(8, 75, 138, 0.8);
     align-items: center;
     align-content: center;
     overflow: hidden;
+    height: 100%;
 
     #header {
         width: 100%;
@@ -25,6 +29,41 @@ $header-color: rgba(8, 75, 138, 0.8);
             &:hover {
                 opacity: 1.0;
             }
+        }
+    }
+    #documents {
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
+        #document-list {
+            margin: 1rem 0;
+            flex-basis: 32%;
+            height: 100%;
+            overflow-y: scroll;
+            background-color: $list-color;
+            ul {
+                width: 90%;
+                margin: auto;
+                li {
+                    font-size: 0.7rem;
+                    letter-spacing: 1px;
+                    margin: 2.5rem auto;
+                    padding: 0.5rem 0;
+                    text-align: center;
+                    list-style: none;
+                    &:hover {
+                        cursor: pointer;
+                        background-color: $list-color-hover;
+                    }
+                }
+            }
+        }
+        #document-view {
+            flex-basis: 68%;
         }
     }
 }

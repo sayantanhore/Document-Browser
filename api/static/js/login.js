@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import $ from 'jquery';
+import {store} from './store';
 export default class Login extends Component {
     constructor() {
         super();
@@ -23,8 +24,8 @@ export default class Login extends Component {
         };
         $.post('/login', params)
         .done((data) => {
-            console.log(data);
             if(data.token) {
+                store.data.authtoken = data.token;
                 this.props.goTo('browse');
             }
         })

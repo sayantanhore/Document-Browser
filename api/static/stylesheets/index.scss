@@ -8,5 +8,13 @@ html, body {
     font-family: 'Open Sans', sans-serif;
 }
 
+#container {
+    height: 100%;
+}
+
+::-webkit-scrollbar {
+    width: 1px;
+}
+
 @import 'login.scss';
 @import 'browse.scss';
