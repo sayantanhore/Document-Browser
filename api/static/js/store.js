@@ -5,6 +5,10 @@ class Model {
     reset() {
         this.authtoken = null;
         this.files = [];
+        this.activeFile = {
+            id: null,
+            text: ''
+        }
     }
 }
 

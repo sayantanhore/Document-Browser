@@ -35,6 +35,7 @@ export default class Documents extends Component {
         this.setState({totalDocuments: store.data.files.length});
     }
     showText() {
+        $('#search-box input[type="text"]').val('');
         this.setState({textAvailable: true});
     }
     render() {

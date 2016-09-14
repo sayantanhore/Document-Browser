@@ -19,8 +19,10 @@ export default class DocumentList extends Component {
             }
         })
         .done((data) => {
-            store.data.fileText = data;
-            console.log(this.props)
+            store.data.activeFile = {
+                id: id,
+                text: data
+            };
             this.props.renderText();
         });
     }

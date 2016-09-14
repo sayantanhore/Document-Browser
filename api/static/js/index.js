@@ -172,8 +172,10 @@ var DocumentList = function (_Component) {
                     Authorization: 'username=ssh ' + _store.store.data.authtoken
                 }
             }).done(function (data) {
-                _store.store.data.fileText = data;
-                console.log(_this2.props);
+                _store.store.data.activeFile = {
+                    id: id,
+                    text: data
+                };
                 _this2.props.renderText();
             });
         }
@@ -220,6 +222,10 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _jquery = require('jquery');
+
+var _jquery2 = _interopRequireDefault(_jquery);
+
 var _store = require('./store');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -236,19 +242,60 @@ var DocumentView = function (_Component) {
     function DocumentView() {
         _classCallCheck(this, DocumentView);
 
-        return _possibleConstructorReturn(this, (DocumentView.__proto__ || Object.getPrototypeOf(DocumentView)).call(this));
+        var _this = _possibleConstructorReturn(this, (DocumentView.__proto__ || Object.getPrototypeOf(DocumentView)).call(this));
+
+        _this.search = _this.search.bind(_this);
+        return _this;
     }
 
     _createClass(DocumentView, [{
+        key: 'search',
+        value: function search(event) {
+            var query = event.target.value;
+            if (query) {
+                var url = '/document/' + _store.store.data.activeFile.id + '/text?search=' + query;
+                _jquery2.default.ajax({
+                    url: url,
+                    headers: {
+                        Authorization: 'username=ssh ' + _store.store.data.authtoken
+                    }
+                }).done(function (data) {
+                    var initial = '<span class="highlight">';
+                    var final = '</span>';
+                    var enclosureLength = initial.length + final.length;
+                    var changedTxt = _store.store.data.activeFile.text;
+                    data.forEach(function (range, index) {
+                        var first = range[0];
+                        var last = range[1];
+
+                        var pick = initial + changedTxt.substring(index * enclosureLength + first, index * enclosureLength + last) + final;
+                        changedTxt = changedTxt.substring(0, index * enclosureLength + first) + pick + changedTxt.substring(index * enclosureLength + last);
+                    });
+                    (0, _jquery2.default)('#text p').html(changedTxt);
+                });
+            } else {
+                (0, _jquery2.default)('#text p').text(_store.store.data.activeFile.text);
+            }
+        }
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
                 'div',
                 { id: 'document-view' },
                 _react2.default.createElement(
-                    'p',
-                    null,
-                    _store.store.data.fileText
+                    'div',
+                    { id: 'search-box' },
+                    _react2.default.createElement('input', { type: 'text', placeholder: 'Search here', onChange: this.search })
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { id: 'text' },
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        _store.store.data.activeFile.text
+                    )
                 )
             );
         }
@@ -259,7 +306,7 @@ var DocumentView = function (_Component) {
 
 exports.default = DocumentView;
 
-},{"./store":9,"react":181}],5:[function(require,module,exports){
+},{"./store":9,"jquery":35,"react":181}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -332,6 +379,7 @@ var Documents = function (_Component) {
     }, {
         key: 'showText',
         value: function showText() {
+            (0, _jquery2.default)('#search-box input[type="text"]').val('');
             this.setState({ textAvailable: true });
         }
     }, {
@@ -549,7 +597,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 _reactDom2.default.render(_react2.default.createElement(_app2.default, null), document.getElementById('container'));
 
 },{"./app":1,"react":181,"react-dom":38}],9:[function(require,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -567,10 +615,14 @@ var Model = function () {
     }
 
     _createClass(Model, [{
-        key: "reset",
+        key: 'reset',
         value: function reset() {
             this.authtoken = null;
             this.files = [];
+            this.activeFile = {
+                id: null,
+                text: ''
+            };
         }
     }]);
 
