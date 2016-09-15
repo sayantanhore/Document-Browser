@@ -36,17 +36,17 @@ export default class Login extends Component {
     render() {
         return (
             <div id="login-container">
-                <div id="login-title">
+                <div className="login-title">
                     <span>Login</span>
                 </div>
-                <div id="login">
+                <div className="login">
                     <div>
                         <input type="text" placeholder="Username" onChange={this.getUsername}/>
                     </div>
                     <div>
                         <input type="password" placeholder="Password" onChange={this.getPassword}/>
                     </div>
-                    <div id="submit" onClick={this.loginHandler}>
+                    <div className="submit" onClick={this.loginHandler}>
                         <a href='#'>Go</a>
                     </div>
                 </div>

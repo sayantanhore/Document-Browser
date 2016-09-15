@@ -1,8 +1,8 @@
 $page-background-color: rgb(223, 227, 238);
-$title-bar-color: rgb(139, 157, 195);
+$title-bar-color: rgba(59, 89, 152, 0.8);
 $login-box-color: #FFF;
 $input-background-color: rgb(240, 243, 244);
-$button-primary-color: rgba(59, 89, 152, 0.6);
+$button-primary-color: rgba(59, 89, 152, 0.8);
 $button-text-color: #FFF;
 
 #login-container {
@@ -14,8 +14,8 @@ $button-text-color: #FFF;
     height: 100%;
     background-color: $page-background-color;
 
-    
-    #login-title {
+
+    .login-title {
         width: 25%;
         height: 4%;
         display: flex;
@@ -28,7 +28,7 @@ $button-text-color: #FFF;
             margin: 0 0.5rem;
         }
     }
-    #login {
+    .login {
         width: 25%;
         height: 25%;
         display: flex;
@@ -51,7 +51,7 @@ $button-text-color: #FFF;
                 outline: none;
             }
         }
-        div#submit {
+        .submit {
             background-color: $button-primary-color;
             width: 25%;
             cursor: pointer;

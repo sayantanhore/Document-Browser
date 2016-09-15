@@ -555,7 +555,7 @@ var Login = function (_Component) {
                 { id: 'login-container' },
                 _react2.default.createElement(
                     'div',
-                    { id: 'login-title' },
+                    { className: 'login-title' },
                     _react2.default.createElement(
                         'span',
                         null,
@@ -564,7 +564,7 @@ var Login = function (_Component) {
                 ),
                 _react2.default.createElement(
                     'div',
-                    { id: 'login' },
+                    { className: 'login' },
                     _react2.default.createElement(
                         'div',
                         null,
@@ -577,7 +577,7 @@ var Login = function (_Component) {
                     ),
                     _react2.default.createElement(
                         'div',
-                        { id: 'submit', onClick: this.loginHandler },
+                        { className: 'submit', onClick: this.loginHandler },
                         _react2.default.createElement(
                             'a',
                             { href: '#' },

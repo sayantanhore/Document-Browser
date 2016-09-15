@@ -1,8 +1,10 @@
 $header-color: rgba(59, 89, 152, 0.8);
 $list-color: rgba(216, 223, 234, 0.6);
 $list-color-hover: rgba(175, 189, 212, 0.6);
+$list-color-selected: rgb(75, 89, 112);
 $title-text-color: #FFF;
-$document-text-color: rgb(129, 138, 145);
+$seacrh-box-color: rgba(247, 247, 247, 0.7);
+$document-text-color: rgb(29, 38, 45);
 #browse {
     display: flex;
     flex-flow: column nowrap;
@@ -62,7 +64,9 @@ $document-text-color: rgb(129, 138, 145);
                     text-align: center;
                     list-style: none;
                     color: $document-text-color;
+                    overflow: hidden;
                     text-overflow: ellipsis;
+                    white-space: nowrap;
                     &:hover {
                         cursor: pointer;
                         background-color: $list-color-hover;
@@ -71,6 +75,7 @@ $document-text-color: rgb(129, 138, 145);
                         background-color: $list-color-hover;
                         padding-left: 0;
                         border-left: 0.3rem solid;
+                        border-color: $list-color-selected;
                     }
                 }
             }
@@ -90,9 +95,9 @@ $document-text-color: rgb(129, 138, 145);
                 justify-content: center;
                 align-items: center;
                 text-align: center;
-                background-color: rgba(247, 247, 247, 0.7);
+                background-color: $seacrh-box-color;
                 input[type="text"] {
-                    background-color: rgba(247, 247, 247, 0.7);
+                    background-color: $seacrh-box-color;
                     width: 98%;
                     font-size: 14px;
                     border: 0;
@@ -114,7 +119,7 @@ $document-text-color: rgb(129, 138, 145);
                     }
                     .highlight {
                         color: white;
-                        background-color: rgba(21, 67, 96, 0.5);
+                        background-color: rgba(21, 67, 96, 0.8);
                     }
                 }
             }
