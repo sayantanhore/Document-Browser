@@ -35,17 +35,20 @@ export default class Login extends Component {
     }
     render() {
         return (
-            <div id="login">
-                <div>
-                    <label>Username</label>
-                    <input type="text" onChange={this.getUsername}/>
+            <div id="login-container">
+                <div id="login-title">
+                    <span>Login</span>
                 </div>
-                <div>
-                    <label>Password</label>
-                    <input type="password" onChange={this.getPassword}/>
-                </div>
-                <div>
-                    <a href='#' onClick={this.loginHandler}>Go</a>
+                <div id="login">
+                    <div>
+                        <input type="text" placeholder="Username" onChange={this.getUsername}/>
+                    </div>
+                    <div>
+                        <input type="password" placeholder="Password" onChange={this.getPassword}/>
+                    </div>
+                    <div id="submit" onClick={this.loginHandler}>
+                        <a href='#'>Go</a>
+                    </div>
                 </div>
             </div>
         )

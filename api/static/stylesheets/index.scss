@@ -4,6 +4,7 @@
 }
 
 html, body {
+    html {overflow: -moz-scrollbars-none;}
     height: 100vh;
     font-family: 'Open Sans', sans-serif;
 }
@@ -14,6 +15,11 @@ html, body {
 
 ::-webkit-scrollbar {
     width: 1px;
+}
+
+scrollbar[orient="vertical"] scrollbarbutton,
+scrollbar[orient="vertical"] slider {
+ -moz-appearance: none !important;
 }
 
 @import 'login.scss';

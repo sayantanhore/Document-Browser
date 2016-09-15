@@ -7,7 +7,11 @@ export default class DocumentView extends Component {
         super();
         this.search = this.search.bind(this);
     }
+    componentWillUpdate() {
+        $(this.refs.doctext.querySelector('p')).text(store.data.activeFile.text);
+    }
     search(event) {
+        let textElement = $(this.refs.doctext.querySelector('p'));
         let query = event.target.value;
         if(query) {
             const url = `/document/${store.data.activeFile.id}/text?search=${query}`;
@@ -29,17 +33,17 @@ export default class DocumentView extends Component {
                     let pick = initial + changedTxt.substring(index * enclosureLength + first, index * enclosureLength + last) + final;
                     changedTxt = changedTxt.substring(0, index * enclosureLength + first) + pick + changedTxt.substring(index * enclosureLength + last);
                 });
-                $('#text p').html(changedTxt);
+                textElement.html(changedTxt);
             });
         } else {
-            $('#text p').text(store.data.activeFile.text);
+            textElement .text(store.data.activeFile.text);
         }
     }
     render() {
         return (
-            <div id="document-view">
-                <div id="search-box"><input type="text" placeholder="Search here" onChange={this.search}/></div>
-                <div id="text"><p>{store.data.activeFile.text}</p></div>
+            <div className="document-view">
+                <div className="search-box"><input type="text" placeholder="Search here" onChange={this.search}/></div>
+                <div ref="doctext" className="text"><p>{store.data.activeFile.text}</p></div>
             </div>
         )
     }

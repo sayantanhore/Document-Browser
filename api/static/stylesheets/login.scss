@@ -1,17 +1,64 @@
-#login {
-    height: 100%;
+$page-background-color: rgb(223, 227, 238);
+$title-bar-color: rgb(139, 157, 195);
+$login-box-color: #FFF;
+$input-background-color: rgb(240, 243, 244);
+$button-primary-color: rgba(59, 89, 152, 0.6);
+$button-text-color: #FFF;
+
+#login-container {
+    font-size: 12px;
     display: flex;
     flex-flow: column nowrap;
     justify-content: center;
     align-items: center;
-    align-content: center;
-    div {
+    height: 100%;
+    background-color: $page-background-color;
+
+    
+    #login-title {
+        width: 25%;
+        height: 4%;
         display: flex;
         flex-flow: row nowrap;
-        width: 50%;
+        justify-content: flex-start;
+        align-items: center;
+        background-color: $title-bar-color;
+        color: #FFF;
+        span {
+            margin: 0 0.5rem;
+        }
+    }
+    #login {
+        width: 25%;
+        height: 25%;
+        display: flex;
+        flex-flow: column nowrap;
         justify-content: center;
-        label, input {
+        align-items: center;
+        align-content: center;
+        background-color: $login-box-color;
+        div {
+            display: flex;
+            justify-content: center;
             margin: 0.5rem 0.5rem;
+            width: 80%;
+            background-color: $input-background-color;
+            input {
+                background-color: $input-background-color;
+                width: 100%;
+                margin: 0.4rem;
+                border: 0;
+                outline: none;
+            }
+        }
+        div#submit {
+            background-color: $button-primary-color;
+            width: 25%;
+            cursor: pointer;
+            a {
+                color: $button-text-color;
+                text-decoration: none;
+            }
         }
     }
 }

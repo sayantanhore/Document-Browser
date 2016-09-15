@@ -162,9 +162,12 @@ var DocumentList = function (_Component) {
 
     _createClass(DocumentList, [{
         key: 'handleClick',
-        value: function handleClick(id) {
+        value: function handleClick(event, id) {
             var _this2 = this;
 
+            console.log(this.refs.ulist.querySelectorAll('li'));
+            (0, _jquery2.default)(this.refs.ulist.querySelectorAll('li')).removeClass('selected');
+            (0, _jquery2.default)(event.target).addClass('selected');
             var url = '/document/' + id + '/text';
             _jquery2.default.ajax({
                 url: url,
@@ -186,15 +189,15 @@ var DocumentList = function (_Component) {
 
             return _react2.default.createElement(
                 'div',
-                { id: 'document-list' },
+                { className: 'document-list' },
                 _react2.default.createElement(
                     'ul',
-                    null,
+                    { ref: 'ulist' },
                     _store.store.data.files.map(function (file, index) {
                         return _react2.default.createElement(
                             'li',
-                            { key: index, onClick: function onClick() {
-                                    return _this3.handleClick(file.id);
+                            { key: index, onClick: function onClick(event) {
+                                    return _this3.handleClick(event, file.id);
                                 } },
                             file.name
                         );
@@ -249,8 +252,14 @@ var DocumentView = function (_Component) {
     }
 
     _createClass(DocumentView, [{
+        key: 'componentWillUpdate',
+        value: function componentWillUpdate() {
+            (0, _jquery2.default)(this.refs.doctext.querySelector('p')).text(_store.store.data.activeFile.text);
+        }
+    }, {
         key: 'search',
         value: function search(event) {
+            var textElement = (0, _jquery2.default)(this.refs.doctext.querySelector('p'));
             var query = event.target.value;
             if (query) {
                 var url = '/document/' + _store.store.data.activeFile.id + '/text?search=' + query;
@@ -271,10 +280,10 @@ var DocumentView = function (_Component) {
                         var pick = initial + changedTxt.substring(index * enclosureLength + first, index * enclosureLength + last) + final;
                         changedTxt = changedTxt.substring(0, index * enclosureLength + first) + pick + changedTxt.substring(index * enclosureLength + last);
                     });
-                    (0, _jquery2.default)('#text p').html(changedTxt);
+                    textElement.html(changedTxt);
                 });
             } else {
-                (0, _jquery2.default)('#text p').text(_store.store.data.activeFile.text);
+                textElement.text(_store.store.data.activeFile.text);
             }
         }
     }, {
@@ -282,15 +291,15 @@ var DocumentView = function (_Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                { id: 'document-view' },
+                { className: 'document-view' },
                 _react2.default.createElement(
                     'div',
-                    { id: 'search-box' },
+                    { className: 'search-box' },
                     _react2.default.createElement('input', { type: 'text', placeholder: 'Search here', onChange: this.search })
                 ),
                 _react2.default.createElement(
                     'div',
-                    { id: 'text' },
+                    { ref: 'doctext', className: 'text' },
                     _react2.default.createElement(
                         'p',
                         null,
@@ -379,7 +388,7 @@ var Documents = function (_Component) {
     }, {
         key: 'showText',
         value: function showText() {
-            (0, _jquery2.default)('#search-box input[type="text"]').val('');
+            (0, _jquery2.default)('.search-box input[type="text"]').val('');
             this.setState({ textAvailable: true });
         }
     }, {
@@ -387,7 +396,7 @@ var Documents = function (_Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                { id: 'documents' },
+                { className: 'documents' },
                 _react2.default.createElement(_documentList2.default, { renderText: this.showText }),
                 _react2.default.createElement(_documentView2.default, null)
             );
@@ -446,7 +455,12 @@ var Header = function (_Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                { id: 'header' },
+                { className: 'header' },
+                _react2.default.createElement(
+                    'span',
+                    null,
+                    'Document Browser'
+                ),
                 _react2.default.createElement(
                     'a',
                     { href: '#', onClick: this.logoutHandler },
@@ -538,34 +552,37 @@ var Login = function (_Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                { id: 'login' },
+                { id: 'login-container' },
                 _react2.default.createElement(
                     'div',
-                    null,
+                    { id: 'login-title' },
                     _react2.default.createElement(
-                        'label',
+                        'span',
                         null,
-                        'Username'
-                    ),
-                    _react2.default.createElement('input', { type: 'text', onChange: this.getUsername })
+                        'Login'
+                    )
                 ),
                 _react2.default.createElement(
                     'div',
-                    null,
+                    { id: 'login' },
                     _react2.default.createElement(
-                        'label',
+                        'div',
                         null,
-                        'Password'
+                        _react2.default.createElement('input', { type: 'text', placeholder: 'Username', onChange: this.getUsername })
                     ),
-                    _react2.default.createElement('input', { type: 'password', onChange: this.getPassword })
-                ),
-                _react2.default.createElement(
-                    'div',
-                    null,
                     _react2.default.createElement(
-                        'a',
-                        { href: '#', onClick: this.loginHandler },
-                        'Go'
+                        'div',
+                        null,
+                        _react2.default.createElement('input', { type: 'password', placeholder: 'Password', onChange: this.getPassword })
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { id: 'submit', onClick: this.loginHandler },
+                        _react2.default.createElement(
+                            'a',
+                            { href: '#' },
+                            'Go'
+                        )
                     )
                 )
             );

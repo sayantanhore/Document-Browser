@@ -10,7 +10,10 @@ export default class DocumentList extends Component {
         }
         this.handleClick = this.handleClick.bind(this);
     }
-    handleClick(id) {
+    handleClick(event, id) {
+        console.log(this.refs.ulist.querySelectorAll('li'));
+        $(this.refs.ulist.querySelectorAll('li')).removeClass('selected');
+        $(event.target).addClass('selected');
         const url = `/document/${id}/text`;
         $.ajax({
             url: url,
@@ -28,10 +31,10 @@ export default class DocumentList extends Component {
     }
     render() {
         return (
-            <div id="document-list">
-                <ul>
+            <div className="document-list">
+                <ul ref="ulist">
                     {store.data.files.map((file, index) => {
-                        return <li key={index} onClick={() => this.handleClick(file.id)}>{file.name}</li>
+                        return <li key={index} onClick={(event) => this.handleClick(event, file.id)}>{file.name}</li>
                     })}
                 </ul>
             </div>
