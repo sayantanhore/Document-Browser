@@ -48,7 +48,7 @@ $document-text-color: rgb(29, 38, 45);
         align-items: center;
         height: 95%;
         .document-list {
-            flex-basis: 32%;
+            width: 32%;
             height: 100%;
             overflow-y: scroll;
             background-color: $list-color;
@@ -79,7 +79,7 @@ $document-text-color: rgb(29, 38, 45);
             }
         }
         .document-view {
-            flex-basis: 68%;
+            width: 68%;
             padding: 0 4rem;
             height: 100%;
             display: flex;
