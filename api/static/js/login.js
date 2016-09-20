@@ -9,6 +9,9 @@ export default class Login extends Component {
         this.loginHandler = this.loginHandler.bind(this);
         this.getUsername = this.getUsername.bind(this);
         this.getPassword = this.getPassword.bind(this);
+        this.state = {
+            loginFailed: false
+        }
     }
     getUsername(event) {
         this.username = event.target.value;
@@ -24,13 +27,18 @@ export default class Login extends Component {
         };
         $.post('/login', params)
         .done((data) => {
+            console.log('data', data.statusText)
             if(data.token) {
-                store.data.authtoken = data.token;
+                store.data.auth.token = data.token;
                 this.props.goTo('browse');
             }
         })
-        .fail((err) => {
-            console.log(err);
+        .fail((error) => {
+            console.log(error);
+            if(error.statusText === 'BAD REQUEST') {
+                store.data.auth.errorMessage = 'Invalid Username or Password';
+                this.setState({loginFailed: true});
+            }
         });
     }
     render() {
@@ -40,6 +48,9 @@ export default class Login extends Component {
                     <span>Login</span>
                 </div>
                 <div className="login">
+                    <div className="error-message">
+                        <span>{store.data.auth.errorMessage}</span>
+                    </div>
                     <div>
                         <input type="text" placeholder="Username" onChange={this.getUsername}/>
                     </div>

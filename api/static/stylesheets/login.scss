@@ -30,7 +30,7 @@ $button-text-color: #FFF;
     }
     .login {
         width: 25%;
-        height: 25%;
+        height: 20%;
         display: flex;
         flex-flow: column nowrap;
         justify-content: center;
@@ -49,6 +49,13 @@ $button-text-color: #FFF;
                 margin: 0.4rem;
                 border: 0;
                 outline: none;
+            }
+            &.error-message {
+                background-color: inherit;
+                span {
+                    font-size: 10px;
+                    color: red;
+                }
             }
         }
         .submit {

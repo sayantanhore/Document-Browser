@@ -18,7 +18,7 @@ export default class DocumentView extends Component {
             $.ajax({
                 url: url,
                 headers: {
-                    Authorization : 'username=ssh ' + store.data.authtoken
+                    Authorization : 'username=ssh ' + store.data.auth.token
                 }
             })
             .done((data) => {

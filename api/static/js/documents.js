@@ -15,7 +15,7 @@ export default class Documents extends Component {
         $.ajax({
             url: '/documents',
             headers: {
-                Authorization : 'username=ssh ' + store.data.authtoken
+                Authorization : 'username=ssh ' + store.data.auth.token
             }
         })
         .done((data) => {

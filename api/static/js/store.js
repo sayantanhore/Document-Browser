@@ -3,7 +3,7 @@ class Model {
         this.reset();
     }
     reset() {
-        this.authtoken = null;
+        this.auth = {};
         this.files = [];
         this.activeFile = {
             id: null,
