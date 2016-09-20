@@ -5,3 +5,4 @@ dataminer/
 node_modules/
 **/*.pyc
 **/*.css
+**/*index.js
