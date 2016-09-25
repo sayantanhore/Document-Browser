@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
 import {store} from './store';
-import $ from 'jquery';
+import 'whatwg-fetch';
 
 export default class DocumentList extends Component {
     constructor() {
@@ -11,16 +12,16 @@ export default class DocumentList extends Component {
         this.handleClick = this.handleClick.bind(this);
     }
     handleClick(event, id) {
-        $(this.refs.ulist.querySelectorAll('li')).removeClass('selected');
-        $(event.target).addClass('selected');
-        const url = `/document/${id}/text`;
-        $.ajax({
-            url: url,
+        Array.from(this.refs.ulist.querySelectorAll('li')).forEach((node) => {
+          ReactDOM.findDOMNode(node).classList.remove('selected');
+        });
+        ReactDOM.findDOMNode(event.target).classList.add('selected');
+        fetch(`/document/${id}/text`, {
+            method: 'GET',
             headers: {
-                Authorization : 'username=ssh ' + store.data.auth.token
+                'Authorization' : `username=ssh ${store.data.auth.token}`
             }
-        })
-        .done((data) => {
+        }).then((response) => response.json()).then((data) => {
             store.data.activeFile = {
                 id: id,
                 text: data

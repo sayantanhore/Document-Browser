@@ -1,46 +1,46 @@
 import React, {Component} from 'react';
-import $ from 'jquery';
 import {store} from './store';
+import 'whatwg-fetch';
+
 export default class Login extends Component {
     constructor() {
         super();
-        this.username = '';
-        this.password = '';
         this.loginHandler = this.loginHandler.bind(this);
-        this.getUsername = this.getUsername.bind(this);
-        this.getPassword = this.getPassword.bind(this);
         this.state = {
             loginFailed: false
         }
     }
-    getUsername(event) {
-        this.username = event.target.value;
-    }
-    getPassword(event) {
-        this.password = event.target.value;
-    }
+
     loginHandler() {
-        console.log("Login");
-        let params = {
-            username: this.username,
-            password: this.password
-        };
-        $.post('/login', params)
-        .done((data) => {
-            console.log('data', data.statusText)
+        fetch('/login', {
+          method: 'post',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            username: this.refs.username.value,
+            password: this.refs.password.value
+          })
+        }).then((response) => {
+          return response.json();
+        }).then((data) => {
             if(data.token) {
                 store.data.auth.token = data.token;
                 this.props.goTo('browse');
             }
-        })
-        .fail((error) => {
-            console.log(error);
+            if(data.message === 'Login failed') {
+                store.data.auth.errorMessage = 'Invalid Username or Password';
+                this.setState({loginFailed: true});
+            }
+        }).catch((error) => {
             if(error.statusText === 'BAD REQUEST') {
                 store.data.auth.errorMessage = 'Invalid Username or Password';
                 this.setState({loginFailed: true});
             }
         });
     }
+
     render() {
         return (
             <div id="login-container">
@@ -52,13 +52,13 @@ export default class Login extends Component {
                         <span>{store.data.auth.errorMessage}</span>
                     </div>
                     <div>
-                        <input type="text" placeholder="Username" onChange={this.getUsername}/>
+                        <input ref="username" type="text" placeholder="Username"/>
                     </div>
                     <div>
-                        <input type="password" placeholder="Password" onChange={this.getPassword}/>
+                        <input ref="password" type="password" placeholder="Password"/>
                     </div>
                     <div className="submit" onClick={this.loginHandler}>
-                        <a href='#'>Go</a>
+                        <a href='#'>Login</a>
                     </div>
                 </div>
             </div>
