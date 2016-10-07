@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import $ from 'jquery';
+import ReactDOM from 'react-dom';
 import {store} from './store';
+import 'whatwg-fetch';
 import DocumentList from './documentList';
 import DocumentView from './documentView';
 
@@ -12,20 +13,20 @@ export default class Documents extends Component {
             totalDocuments: 0,
             textAvailable: false
         }
-        $.ajax({
-            url: '/documents',
+        fetch('/documents', {
+            method: 'GET',
             headers: {
-                Authorization : 'username=ssh ' + store.data.authtoken
+                'Authorization': `username=ssh ${store.data.auth.token}`
             }
-        })
-        .done((data) => {
+        }).then((response) => {
+            return response.json();
+        }).then((data) => {
             data.forEach((file) => {
                 store.data.files.push({id: file.id, name: file.name});
             });
             this.loadList();
-        })
-        .fail((err) => {
-            console.log(err);
+        }).catch((error) => {
+            console.log(error);
         });
         this.loadList = this.loadList.bind(this);
         this.showText = this.showText.bind(this);
@@ -35,14 +36,14 @@ export default class Documents extends Component {
         this.setState({totalDocuments: store.data.files.length});
     }
     showText() {
-        $('.search-box input[type="text"]').val('');
+        ReactDOM.findDOMNode(this.refs.docList.refs.search).value = '';
         this.setState({textAvailable: true});
     }
     render() {
         return (
             <div className="documents">
                 <DocumentList renderText={this.showText}/>
-                <DocumentView />
+                <DocumentView ref="docList" />
             </div>
         );
     }
